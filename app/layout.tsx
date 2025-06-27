@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ApolloWrapper from "./ApolloWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,12 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-white min-h-screen flex flex-col`}
       >
-        <Navbar/>
-        <div className="grow ">
-
-        {children}
-        </div>
-        <Footer/>
+        <ApolloWrapper>
+          <Navbar />
+          <div className="grow ">{children}</div>
+          <Footer />
+        </ApolloWrapper>
       </body>
     </html>
   );
