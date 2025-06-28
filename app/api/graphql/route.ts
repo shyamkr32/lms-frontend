@@ -2,6 +2,17 @@ import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { gql } from 'graphql-tag';
 
+type RegisterArgs = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+type LoginArgs = {
+  email: string;
+  password: string;
+};
+
 // Schema Definition
 const typeDefs = gql`
   type User {
@@ -33,12 +44,12 @@ const resolvers = {
     users: () => users,
   },
   Mutation: {
-    register: (_: any, { name, email, password }: any) => {
+   register: (_: unknown, { name, email, password }: RegisterArgs) => {
       const newUser = { id: Date.now(), name, email, password };
       users.push(newUser);
       return newUser;
     },
-    login: (_: any, { email, password }: any) => {
+    login: (_: unknown, { email, password }: LoginArgs) => {
       const user = users.find((u) => u.email === email && u.password === password);
       if (!user) {
         throw new Error('Invalid credentials');
