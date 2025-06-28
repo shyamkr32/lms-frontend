@@ -59,7 +59,7 @@ export default function RegisterPage() {
     
       });
       setError(null);
-    } catch (_err) {
+    } catch  {
       setError("Registration failed. Try again.");
     }
   };

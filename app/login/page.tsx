@@ -67,7 +67,7 @@ export default function LoginPage() {
     
       });
       }
-    } catch (_err) {
+    } catch  {
       setError("Login failed. Try again.");
        toast('🦄 Login failed. Try again.', {
       position: "top-center",
