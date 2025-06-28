@@ -1,6 +1,13 @@
 "use client";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import {z} from "zod";
+
+const RegisterSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 const REGISTER = gql`
   mutation Register($name: String!, $email: String!, $password: String!) {
@@ -14,11 +21,25 @@ const REGISTER = gql`
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [register] = useMutation(REGISTER);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register({ variables: form });
-    alert("Registration Successful");
+
+    const validation = RegisterSchema.safeParse(form);
+    if (!validation.success) {
+      const firstError = validation.error.issues[0].message;
+      setError(firstError);
+      return;
+    }
+
+    try {
+      await register({ variables: form });
+      alert("Registration Successful");
+      setError(null);
+    } catch (err: any) {
+      setError("Registration failed. Try again.");
+    }
   };
 
   return (

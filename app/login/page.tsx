@@ -3,7 +3,15 @@ import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { z } from "zod";
 
+// Define Zod schema for login form
+const LoginSchema = z.object({
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+//  GraphQL mutation
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -16,13 +24,28 @@ export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [login] = useMutation(LOGIN);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data } = await login({ variables: form });
-    if (data?.login?.token) {
-      localStorage.setItem("token", data.login.token);
-      router.push("/");
+
+    const validation = LoginSchema.safeParse(form);
+    if (!validation.success) {
+      const firstError = validation.error.issues[0].message;
+      setError(firstError);
+      return;
+    }
+
+    try {
+      const { data } = await login({ variables: form });
+      if (data?.login?.token) {
+        localStorage.setItem("token", data.login.token);
+        router.push("/");
+      } else {
+        setError("Invalid login credentials.");
+      }
+    } catch (err: any) {
+      setError("Login failed. Try again.");
     }
   };
 
