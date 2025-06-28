@@ -25,7 +25,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [login] = useMutation(LOGIN);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +67,7 @@ export default function LoginPage() {
     
       });
       }
-    } catch (err: any) {
+    } catch (_err) {
       setError("Login failed. Try again.");
        toast('🦄 Login failed. Try again.', {
       position: "top-center",
@@ -125,7 +125,7 @@ theme="light"
         Login
       </button>
       <div className="flex gap-16">
-        <span>Don't have an account?</span>
+        <span>Don&apos;t have an account?</span>
         <Link href={"/register"}>
           <div className="underline">Register</div>
         </Link>

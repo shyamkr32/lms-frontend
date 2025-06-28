@@ -22,7 +22,7 @@ const REGISTER = gql`
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [register] = useMutation(REGISTER);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +59,7 @@ export default function RegisterPage() {
     
       });
       setError(null);
-    } catch (err: any) {
+    } catch (_err) {
       setError("Registration failed. Try again.");
     }
   };
