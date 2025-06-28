@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import {z} from "zod";
+import { toast,ToastContainer } from "react-toastify";
 
 const RegisterSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -30,12 +31,33 @@ export default function RegisterPage() {
     if (!validation.success) {
       const firstError = validation.error.issues[0].message;
       setError(firstError);
+       toast('🦄 Registration failed', {
+      position: "top-center",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    
+      });
       return;
     }
 
     try {
       await register({ variables: form });
-      alert("Registration Successful");
+       toast('🦄 Registration succesful', {
+      position: "top-center",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    
+      });
       setError(null);
     } catch (err: any) {
       setError("Registration failed. Try again.");
@@ -47,6 +69,22 @@ export default function RegisterPage() {
       onSubmit={handleSubmit}
       className="m-20  border w-[400px] h-[280px] flex flex-col items-center justify-center gap-4 bg-zinc-800 mx-auto"
     >
+
+<ToastContainer
+position="top-center"
+autoClose={700}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+
+/>
+
+
       <input
         type="text"
         placeholder="Name"

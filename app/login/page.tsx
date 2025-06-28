@@ -4,6 +4,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { z } from "zod";
+import { toast,ToastContainer } from "react-toastify";
 
 // Define Zod schema for login form
 const LoginSchema = z.object({
@@ -32,6 +33,17 @@ export default function LoginPage() {
     const validation = LoginSchema.safeParse(form);
     if (!validation.success) {
       const firstError = validation.error.issues[0].message;
+      toast('🦄 log in failed', {
+      position: "top-center",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    
+      });
       setError(firstError);
       return;
     }
@@ -43,9 +55,31 @@ export default function LoginPage() {
         router.push("/");
       } else {
         setError("Invalid login credentials.");
+        toast('🦄 Invalid login credentials', {
+      position: "top-center",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    
+      });
       }
     } catch (err: any) {
       setError("Login failed. Try again.");
+       toast('🦄 Login failed. Try again.', {
+      position: "top-center",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    
+      });
     }
   };
 
@@ -54,6 +88,23 @@ export default function LoginPage() {
       onSubmit={handleSubmit}
       className="m-20  border w-[400px] h-[280px] flex flex-col items-center justify-center gap-4 bg-zinc-800 mx-auto"
     >
+
+<ToastContainer
+position="top-center"
+autoClose={700}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+
+/>
+
+
+
       <h1>Log in</h1>
       <input
         type="email"

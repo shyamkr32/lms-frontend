@@ -31,6 +31,9 @@ const toogleSidebar =()=>{
         <Link href={"/profile"}>
           <div className="rounded-md p-1 hover:bg-zinc-800">Profile</div>{" "}
         </Link>
+        <Link href={"/login"}>
+          <div className="rounded-md p-1 hover:bg-zinc-800">Log in</div>{" "}
+        </Link>
       </div>
 
       {
