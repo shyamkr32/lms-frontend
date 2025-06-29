@@ -130,7 +130,7 @@ theme="light"
           <div className="underline">Register</div>
         </Link>
       </div>
-      <Link href={"/forgotpassword"}><div className="underline">Forgot password</div></Link>
+      <div className="underline">Forgot password</div>
     </form>
   );
 }
