@@ -1,6 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { gql } from 'graphql-tag';
+import { NextRequest } from 'next/server';
 
 type RegisterArgs = {
   name: string;
@@ -44,7 +45,7 @@ const resolvers = {
     users: () => users,
   },
   Mutation: {
-   register: (_: unknown, { name, email, password }: RegisterArgs) => {
+    register: (_: unknown, { name, email, password }: RegisterArgs) => {
       const newUser = { id: Date.now(), name, email, password };
       users.push(newUser);
       return newUser;
@@ -66,6 +67,14 @@ const server = new ApolloServer({
   resolvers,
 });
 
-// Export Vercel-compatible route handlers
-export const GET = startServerAndCreateNextHandler(server);
-export const POST = startServerAndCreateNextHandler(server);
+// Create the handler
+const handler = startServerAndCreateNextHandler(server);
+
+// Export properly typed route handlers for Next.js App Router
+export async function GET(req: NextRequest) {
+  return handler(req);
+}
+
+export async function POST(req: NextRequest) {
+  return handler(req);
+}
